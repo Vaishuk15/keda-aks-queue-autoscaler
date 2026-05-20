@@ -1,0 +1,23 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+
+metadata:
+  name: azure-queue-scaledobject
+
+spec:
+  scaleTargetRef:
+    name: nginx-deployment
+
+  minReplicaCount: 0
+  maxReplicaCount: 5
+
+  pollingInterval: 5
+  cooldownPeriod: 30
+
+  triggers:
+    - type: azure-queue
+
+      metadata:
+        queueName: test
+        connectionFromEnv: FormStorageConnection
+        queueLength: "1"
